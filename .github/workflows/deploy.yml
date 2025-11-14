@@ -43,7 +43,7 @@ jobs:
         run: |
           flutter build web --release \
             --web-renderer html \
-            --dart-define=GITHUB_TOKEN="${{ SAMPLE_GITHUB_TOKEN_SECRET }}" \
+            --dart-define=GITHUB_TOKEN="${{ secretsSAMPLE_GITHUB_TOKEN_SECRET }}" \
             --dart-define=GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
       
       - name: Deploy to GitHub Pages
