@@ -44,7 +44,6 @@ flutter:
   assets:
     - assets/images/
     - assets/pdfs/
-    - .env
 
 flutter_native_splash:
   # Background color (your app's dark theme)
