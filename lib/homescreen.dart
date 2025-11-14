@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import '../widgets/projects_section.dart';
 
+//hi
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
