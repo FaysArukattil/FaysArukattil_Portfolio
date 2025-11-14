@@ -1,0 +1,64 @@
+name: Deploy Portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # Change to 'master' if needed
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'  # Update to match your version
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Verify secrets are loaded
+        run: |
+          echo "🔍 Checking environment variables..."
+          if [ -z "${{ secrets.GITHUB_TOKEN_SECRET }}" ]; then
+            echo "⚠️ WARNING: GITHUB_TOKEN_SECRET is not set!"
+          else
+            echo "✅ GITHUB_TOKEN_SECRET is available (length: ${#GITHUB_TOKEN_SECRET})"
+          fi
+          
+          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "⚠️ WARNING: GEMINI_API_KEY is not set!"
+          else
+            echo "✅ GEMINI_API_KEY is available"
+          fi
+        env:
+          GITHUB_TOKEN_SECRET: ${{ secrets.GITHUB_TOKEN_SECRET }}
+      
+      - name: Build web with secrets
+        run: |
+          echo "🏗️ Building Flutter web with environment variables..."
+          flutter build web --release \
+            --web-renderer html \
+            --dart-define=GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN_SECRET }}" \
+            --dart-define=GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
+          echo "✅ Build completed"
+      
+      - name: Verify build output
+        run: |
+          if [ ! -d "build/web" ]; then
+            echo "❌ Build failed: build/web directory not found"
+            exit 1
+          fi
+          echo "✅ Build output verified"
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+```          

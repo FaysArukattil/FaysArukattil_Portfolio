@@ -1,0 +1,79 @@
+name: my_portfolio
+description: "A new Flutter project."
+
+# Prevent accidental publishing
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.3.0
+  cupertino_icons: ^1.0.8
+  open_file: ^3.5.10
+  path_provider: ^2.1.5
+  permission_handler: ^12.0.1
+  file_saver: ^0.2.14 
+  http: ^1.1.0
+  flutter_markdown: ^0.6.18
+  shared_preferences: ^2.2.2
+  provider: ^6.1.1
+  pdf: ^3.10.7  
+  printing: ^5.11.1  
+  flutter_dotenv: ^6.0.0
+  google_generative_ai: ^0.4.6 
+  visibility_detector: ^0.4.0+2
+  js: ^0.7.2
+  connectivity_plus: ^7.0.0
+
+dev_dependencies:
+  flutter_native_splash: ^2.4.2
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.3
+  build_runner: ^2.4.6
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/pdfs/
+    - .env
+
+flutter_native_splash:
+  # Background color (your app's dark theme)
+  color: "#0A0A0A"
+  
+  # Optional: Add your logo image
+  # image: assets/images/splash_logo.png
+  
+
+
+  
+  # Android and iOS (optional)
+  android: true
+  ios: true
+  
+  # Full screen on web
+  web_image_mode: center
+  
+  # Background image (optional - for more control)
+  # background_image: assets/images/splash_background.png
+  
+  # Enable dark mode (optional)
+  color_dark: "#0A0A0A"
+  # image_dark: assets/images/splash_logo_dark.png
+  
+  # Branding (optional - bottom logo/text)
+  # branding: assets/images/branding.png
+  # branding_dark: assets/images/branding_dark.png
+  
+  # Android 12+ specific (optional)
+  android_12:
+    color: "#0A0A0A"

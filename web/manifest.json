@@ -1,0 +1,35 @@
+{
+    "name": "Fays Arukattil - Flutter Developer Portfolio",
+    "short_name": "FA Portfolio",
+    "start_url": "/FaysArukattil_Portfolio/",
+    "display": "standalone",
+    "background_color": "#0A0A0A",
+    "theme_color": "#DA8B26",
+    "description": "Professional Flutter Developer Portfolio",
+    "orientation": "any",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/FaysArukattil_Portfolio/icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/FaysArukattil_Portfolio/icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/FaysArukattil_Portfolio/icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/FaysArukattil_Portfolio/icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
