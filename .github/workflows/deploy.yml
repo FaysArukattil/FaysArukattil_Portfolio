@@ -27,24 +27,10 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       
-      - name: Verify secrets
-        run: |
-          if [ -z "${{ secrets.SAMPLE_GITHUB_TOKEN_SECRET }}" ]; then
-            echo "❌ ERROR: SAMPLE_GITHUB_TOKEN_SECRET not set!"
-            exit 1
-          fi
-          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
-            echo "❌ ERROR: GEMINI_API_KEY not set!"
-            exit 1
-          fi
-          echo "✅ All secrets found"
-      
       - name: Build web
         run: |
           flutter build web --release \
-            --web-renderer canvaskit \
-            --dart-define=GITHUB_TOKEN="${{ secrets.SAMPLE_GITHUB_TOKEN_SECRET }}" \
-            --dart-define=GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}"
+            --web-renderer canvaskit
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

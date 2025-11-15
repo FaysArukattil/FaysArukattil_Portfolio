@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:my_portfolio/config/app_config.dart';
 import 'package:my_portfolio/services/github_service.dart';
 import 'package:my_portfolio/services/resumegeneration.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import '../widgets/projects_section.dart';
+import 'package:my_portfolio/services/firebase_token_service.dart';
 
-//hi
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -22,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   // ignore: unused_field
   bool _projectsPreloaded = false;
-
+  List<Map<String, dynamic>> _githubProjects = [];
   final _scrollController = ScrollController();
   final _sectionKeys = List.generate(4, (_) => GlobalKey());
   late AnimationController _fadeController, _nameController, _imageController;
@@ -163,7 +162,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _preloadProjectsInBackground() async {
     try {
-      final githubService = GitHubService('FaysArukattil');
+      final githubService = GitHubService(
+        'FaysArukattil',
+        token: FirebaseTokenService.githubToken,
+        geminiApiKey: FirebaseTokenService.geminiApiKey,
+      );
 
       debugPrint('📡 Fetching projects in background...');
 
@@ -376,10 +379,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            child: Icon(
+            child: const Icon(
               Icons.check_circle_outline,
               size: 60,
-              color: const Color(0xFF4CAF50),
+              color: Color(0xFF4CAF50),
             ),
           ),
         );
@@ -434,12 +437,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
+                      valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xFFDA8B26),
                       ),
                     ),
@@ -447,8 +450,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   const SizedBox(width: 12),
                   Text(
                     steps[currentStep],
-                    style: TextStyle(
-                      color: const Color(0xFFDA8B26),
+                    style: const TextStyle(
+                      color: Color(0xFFDA8B26),
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.3,
@@ -482,7 +485,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         _showDownloadOverlay(useCache: false);
 
         // Fetch latest projects and generate PDF
-        final githubService = GitHubService('FaysArukattil');
+        final githubService = GitHubService(
+          'FaysArukattil',
+          token: FirebaseTokenService.githubToken,
+          geminiApiKey: FirebaseTokenService.geminiApiKey,
+        );
         final projects = await githubService.fetchFilteredRepositoriesFast(
           forceRefresh: false,
         );
@@ -531,12 +538,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             padding: const EdgeInsets.all(50),
             constraints: const BoxConstraints(maxWidth: 450),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFF1A1A2E),
-                  const Color(0xFF16213E),
+                  Color(0xFF1A1A2E),
+                  Color(0xFF16213E),
                 ],
               ),
               borderRadius: BorderRadius.circular(24),
@@ -613,9 +620,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
-                        color: const Color(0xFF4CAF50),
+                        color: Color(0xFF4CAF50),
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -1387,13 +1394,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Widget _projects(bool desk, bool mob) => ProjectsSection(
-        key: _sectionKeys[2],
         githubUsername: 'FaysArukattil',
-        eagerLoad: false,
-        onProjectsRefreshed: _onProjectsRefreshed,
-        // Use AppConfig instead of EnvLoaderService
-        githubToken: AppConfig.githubToken,
-        geminiApiKey: AppConfig.geminiKey,
+        githubToken: FirebaseTokenService.githubToken,
+        geminiApiKey: FirebaseTokenService.geminiApiKey,
+        eagerLoad: true,
+        onProjectsRefreshed: (projects) {
+          setState(() => _githubProjects = projects);
+        },
       );
 
   Widget _contact(bool desk, bool mob) {

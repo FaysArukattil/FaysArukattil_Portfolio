@@ -642,7 +642,7 @@ class ResumeGeneratorService {
         'Fays Arukattil - Page ${context.pageNumber} of ${context.pagesCount}',
         style: pw.TextStyle(
           fontSize: 8,
-          color: PdfColor.fromInt(0xFF999999),
+          color: const PdfColor.fromInt(0xFF999999),
           fontStyle: pw.FontStyle.italic,
           font: _cachedItalicFont,
         ),

@@ -1,13 +1,14 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_portfolio/config/app_config.dart';
 import 'package:my_portfolio/homescreen.dart';
+import 'package:my_portfolio/services/firebase_token_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize config (never fails)
-  await AppConfig.initialize();
+  // Initialize Firebase and fetch tokens
+  await FirebaseTokenService.initialize();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

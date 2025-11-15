@@ -570,7 +570,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
         LayoutBuilder(
           builder: (context, constraints) {
             final availableWidth = constraints.maxWidth;
-            final spacing = 24.0;
+            const spacing = 24.0;
 
             double cardWidth;
 
