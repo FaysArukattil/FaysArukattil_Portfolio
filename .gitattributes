@@ -1,0 +1,4 @@
+# Enforce LF for workflow files and shell scripts
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
