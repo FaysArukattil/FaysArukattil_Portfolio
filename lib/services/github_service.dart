@@ -7,12 +7,25 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 class GitHubService {
   static const String _baseUrl = 'https://api.github.com';
   static const String _cacheKeyRepos = 'cached_repos';
-  static const String _cacheKeyFilteredRepos = 'cached_filtered_repos';
+  static const String _cacheKeyFilteredRepos = 'cached_filtered_repos_v3';
   static const String _cacheKeyTimestamp = 'cache_timestamp';
   static const String _cacheKeyFilteredTimestamp = 'cache_filtered_timestamp';
   static const Duration _cacheDuration = Duration(hours: 24);
 
   static const Map<String, Map<String, String>> _projectDescriptions = {
+    'visiaxx': {
+      'title': 'Visiaxx - Digital Eye Care Platform',
+      'short':
+          'Digitalizing clinical eye testing via smartphone for clinics and individuals with automated diagnostics.',
+      'detailed':
+          '''- Sole developer building VisionOptoCare's complete digital eye care platform for clinics and individual users
+- Engineered smartphone-based vision testing suite turning equipment-heavy tests into rapid, accessible digital workflows
+- Built automated diagnostic and report-generation systems processing clinical examination data into structured shareable reports
+- Designed and integrated low-latency video consultation APIs for remote tele-optometry and underserved user access
+- Implemented healthcare data security practices adhering to clinical compliance requirements
+- Built and maintain official company website (visionoptocare.com) introducing product capabilities
+- Tech stack: Flutter, Dart, REST APIs, Video SDKs, Firebase, AWS, Git, Healthcare Compliance'''
+    },
     'instagram_clone': {
       'title': 'Instagram Clone',
       'short':
@@ -54,6 +67,7 @@ class GitHubService {
   };
 
   static const List<String> _learningKeywords = [
+    'taskify',
     'learn',
     'learning',
     'tutorial',
@@ -440,6 +454,24 @@ DO NOT include any other text, explanations, or markdown formatting. Just the su
         final scoreB = b['project_score'] as int;
         return scoreB.compareTo(scoreA);
       });
+
+      // Always inject Visiaxx enterprise project at the top
+      final visiaxx = {
+        'name': 'visiaxx',
+        'display_title': 'Visiaxx - Digital Eye Care Platform',
+        'short_summary': _projectDescriptions['visiaxx']!['short']!,
+        'detailed_summary': _projectDescriptions['visiaxx']!['detailed']!,
+        'language': 'Flutter',
+        'html_url': 'https://visionoptocare.com/',
+        'company_url': 'https://visionoptocare.com/',
+        'is_priority': true,
+        'is_locked': true,
+        'project_score': 500,
+      };
+
+      priorityRepos.removeWhere((p) =>
+          (p['name'] as String).toLowerCase().contains('visiaxx'));
+      priorityRepos.insert(0, visiaxx);
 
       final finalList = [...priorityRepos, ...filtered];
 

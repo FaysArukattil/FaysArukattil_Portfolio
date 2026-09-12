@@ -21,9 +21,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   // ignore: unused_field
   bool _projectsPreloaded = false;
-  List<Map<String, dynamic>> _githubProjects = [];
   final _scrollController = ScrollController();
-  final _sectionKeys = List.generate(4, (_) => GlobalKey());
+  final _sectionKeys = List.generate(5, (_) => GlobalKey());
   late AnimationController _fadeController, _nameController, _imageController;
   late Animation<double> _nameSlide, _nameOpacity, _imageScale, _imageOpacity;
 
@@ -35,17 +34,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       _hoveredRestAPI,
       _hoveredNavItem;
   bool _heroVisible = false,
+      _experienceVisible = false,
       _skillsVisible = false,
       _projectsVisible = false,
       _contactVisible = false;
   bool _isDesktop = false;
   bool _isDownloading = false;
 
-  // NEW: Cache for PDF bytes and projects
+  // Cache for PDF bytes and projects (v3 with verified resume updates)
   Uint8List? _cachedPdfBytes;
   List<Map<String, dynamic>>? _cachedProjects;
-  static const String _pdfCacheKey = 'cached_resume_pdf';
-  static const String _projectsCacheKey = 'cached_resume_projects';
+  static const String _pdfCacheKey = 'cached_resume_pdf_v3';
+  static const String _projectsCacheKey = 'cached_resume_projects_v3';
 
   @override
   @override
@@ -228,11 +228,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final s = _scrollController.offset;
 
     int newSection = 0;
-    if (s > h * 2.5) {
+    if (s > h * 3.2) {
+      newSection = 4;
+    } else if (s > h * 2.2) {
       newSection = 3;
-    } else if (s > h * 1.5) {
+    } else if (s > h * 1.3) {
       newSection = 2;
-    } else if (s > h * 0.5) {
+    } else if (s > h * 0.4) {
       newSection = 1;
     }
 
@@ -240,17 +242,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       setState(() => _currentSection = newSection);
     }
 
-    final shouldShowSkills = s > h * 0.2 && s < h * 1.8;
+    final shouldShowExperience = s > h * 0.1 && s < h * 1.8;
+    if (shouldShowExperience != _experienceVisible) {
+      setState(() => _experienceVisible = shouldShowExperience);
+    }
+
+    final shouldShowSkills = s > h * 0.9 && s < h * 2.6;
     if (shouldShowSkills != _skillsVisible) {
       setState(() => _skillsVisible = shouldShowSkills);
     }
 
-    final shouldShowProjects = s > h * 1.0 && s < h * 2.8;
+    final shouldShowProjects = s > h * 1.8 && s < h * 3.8;
     if (shouldShowProjects != _projectsVisible) {
       setState(() => _projectsVisible = shouldShowProjects);
     }
 
-    final shouldShowContact = s > h * 2.0;
+    final shouldShowContact = s > h * 2.8;
     if (shouldShowContact != _contactVisible) {
       setState(() => _contactVisible = shouldShowContact);
     }
@@ -723,6 +730,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   physics: const ClampingScrollPhysics(),
                   child: Column(children: [
                     _hero(desk, mob),
+                    _experience(desk, mob),
                     _skills(desk, mob),
                     _projects(desk, mob),
                     _contact(desk, mob)
@@ -778,7 +786,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ]),
           if (desk || tab)
             Row(
-                children: ['About', 'Skills', 'Projects', 'Contact']
+                children: ['About', 'Experience', 'Skills', 'Projects', 'Contact']
                     .asMap()
                     .entries
                     .map((e) => _navBtn(e.value, e.key, desk))
@@ -794,9 +802,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               onSelected: _scrollTo,
               itemBuilder: (_) => [
                 _menuItem(0, Icons.person, 'About'),
-                _menuItem(1, Icons.bar_chart, 'Skills'),
-                _menuItem(2, Icons.work, 'Projects'),
-                _menuItem(3, Icons.mail, 'Contact')
+                _menuItem(1, Icons.business_center, 'Experience'),
+                _menuItem(2, Icons.bar_chart, 'Skills'),
+                _menuItem(3, Icons.work, 'Projects'),
+                _menuItem(4, Icons.mail, 'Contact')
               ],
             ),
         ]),
@@ -989,7 +998,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               border: Border.all(
                                   color: const Color(0xFFDA8B26)
                                       .withValues(alpha: 0.4))),
-                          child: Text("Mobile Application Developer",
+                          child: Text("Flutter Developer · Founding Engineer",
                               style: TextStyle(
                                   fontSize: mob ? 16 : 20,
                                   color: const Color(0xFFDA8B26),
@@ -1002,9 +1011,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           const SizedBox(height: 28),
           Container(
               constraints:
-                  BoxConstraints(maxWidth: desk ? 550 : double.infinity),
+                  BoxConstraints(maxWidth: desk ? 580 : double.infinity),
               child: Text(
-                  "Crafting seamless cross-platform experiences with Flutter. Specialized in building high-performance mobile applications with elegant UI/UX and robust architecture.",
+                  "Founding engineer at VisionOptoCare building an end-to-end digital eye testing platform (web, iOS, Android). Experienced in owning full product lifecycles, automated diagnostic reports, video consultation SDKs, and rapid AI-assisted development (Antigravity & Cursor). Seeking to solve practical real-world problems and grow under senior engineers in a product team.",
                   textAlign: desk ? TextAlign.left : TextAlign.center,
                   style: TextStyle(
                       fontSize: mob ? 15 : 17,
@@ -1020,7 +1029,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 _techChip(Icons.flutter_dash, 'Flutter', 0),
                 _techChip(Icons.code, 'Dart', 1),
                 _techChip(Icons.api, 'REST API', 2),
-                _techChip(Icons.layers, 'Provider', 3),
+                _techChip(Icons.videocam, 'Video SDKs', 3),
+                _techChip(Icons.auto_awesome, 'Antigravity / AI', 4),
+                _techChip(Icons.layers, 'Provider', 5),
               ]),
           const SizedBox(height: 40),
           Wrap(spacing: 16, runSpacing: 16, children: [
@@ -1031,7 +1042,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 isPrimary: true,
                 index: 0),
             _glassButton(
-                onPressed: () => _scrollTo(3),
+                onPressed: () => _scrollTo(4),
                 icon: Icons.mail_outline,
                 label: 'Contact Me',
                 isPrimary: false,
@@ -1043,8 +1054,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               runSpacing: 12,
               alignment: desk ? WrapAlignment.start : WrapAlignment.center,
               children: [
-                _infoChip(Icons.location_on, 'Malappuram, Kerala', 10),
-                _infoChip(Icons.school, 'B.Tech CSE', 11),
+                _infoChip(Icons.location_on, 'Mumbai, Maharashtra', 10),
+                _infoChip(Icons.business_center, 'VisionOptoCare (Startup)', 11),
+                _infoChip(Icons.school, 'B.Tech CSE (2025)', 12),
               ]),
         ],
       );
@@ -1173,6 +1185,383 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
+  Widget _experience(bool desk, bool mob) {
+    final experiences = [
+      {
+        'company': 'VisionOptoCare',
+        'role': 'Flutter Developer – Founding Engineer',
+        'type': 'On-site · Mumbai, Maharashtra',
+        'duration': 'December 2025 – Present',
+        'status': 'Active · Current Role',
+        'isCurrent': true,
+        'website': 'https://visionoptocare.com/',
+        'summary':
+            'Sole developer building the complete Flutter product (web, iOS, Android, desktop from a single codebase) to digitize eye testing using a smartphone, designed for both clinics and individual users (pre-launch and in clinical trials).',
+        'bullets': [
+          'Own full development lifecycle end-to-end: research, prototyping, implementation, and testing with no other engineers on the team',
+          'Built automated diagnostic and report-generation systems processing clinical test data into structured, shareable reports',
+          'Designed and integrated APIs for video-based remote eye consultations, built to extend access to underserved users',
+          'Implemented healthcare data security practices adhering to clinical compliance requirements',
+          'Translated clinical and medical requirements from doctors into working technical features',
+          'Built and maintain the company website (visionoptocare.com) introducing the product and company',
+        ],
+        'tech': [
+          'Flutter',
+          'Dart',
+          'REST APIs',
+          'Video SDKs',
+          'Firebase',
+          'AWS',
+          'Antigravity',
+          'Cursor',
+          'Git'
+        ],
+      },
+      {
+        'company': 'Luminar Technolab',
+        'role': 'Flutter Developer Trainee',
+        'type': 'Kochi, Kerala',
+        'duration': 'June 2025 – December 2025',
+        'status': 'Completed',
+        'isCurrent': false,
+        'website': null,
+        'summary':
+            'Completed hands-on production training focused on Flutter mobile apps, state management, and robust REST API integrations.',
+        'bullets': [
+          'Built Flutter mobile apps with a focus on clean UI design and smooth performance',
+          'Wrote maintainable code following industry best practices while collaborating with team members',
+          'Gained experience with state management patterns like Provider and REST API integration using Http and Dio',
+        ],
+        'tech': ['Flutter', 'Dart', 'Provider', 'REST APIs', 'Dio', 'SQLite'],
+      },
+    ];
+
+    return Container(
+      key: _sectionKeys[1],
+      padding: EdgeInsets.symmetric(
+          horizontal: desk ? 120 : (mob ? 18 : 40), vertical: 100),
+      child: AnimatedOpacity(
+        opacity: _experienceVisible ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 600),
+        child: Column(
+          children: [
+            ShaderMask(
+              shaderCallback: (b) => const LinearGradient(
+                      colors: [Color(0xFFDA8B26), Color(0xFFFFC107)])
+                  .createShader(b),
+              child: const Text(
+                'Work Experience',
+                style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Startup ownership & production engineering journey',
+              style: TextStyle(fontSize: 18, color: Colors.white60),
+            ),
+            const SizedBox(height: 50),
+            ...List.generate(
+              experiences.length,
+              (i) => _experienceCard(experiences[i], i, desk, mob),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _experienceCard(
+      Map<String, dynamic> exp, int index, bool desk, bool mob) {
+    final isCurrent = exp['isCurrent'] == true;
+    final bullets = exp['bullets'] as List<String>;
+    final tech = exp['tech'] as List<String>;
+    final website = exp['website'] as String?;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 32),
+      padding: EdgeInsets.all(desk ? 36 : 22),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            isCurrent
+                ? const Color(0xFFDA8B26).withValues(alpha: 0.16)
+                : Colors.white.withValues(alpha: 0.08),
+            isCurrent
+                ? const Color(0xFF1A1A2E).withValues(alpha: 0.3)
+                : Colors.white.withValues(alpha: 0.02),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isCurrent
+              ? const Color(0xFFDA8B26).withValues(alpha: 0.6)
+              : Colors.white.withValues(alpha: 0.15),
+          width: isCurrent ? 2 : 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isCurrent
+                ? const Color(0xFFDA8B26).withValues(alpha: 0.25)
+                : Colors.black.withValues(alpha: 0.3),
+            blurRadius: isCurrent ? 35 : 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 12,
+            runSpacing: 10,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: isCurrent
+                            ? [
+                                const Color(0xFFDA8B26),
+                                const Color(0xFFFFC107)
+                              ]
+                            : [
+                                const Color(0xFF02569B),
+                                const Color(0xFF0175C2)
+                              ],
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (isCurrent
+                                  ? const Color(0xFFDA8B26)
+                                  : const Color(0xFF02569B))
+                              .withValues(alpha: 0.4),
+                          blurRadius: 15,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      isCurrent
+                          ? Icons.visibility_rounded
+                          : Icons.school_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        exp['company'] as String,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        exp['role'] as String,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: isCurrent
+                              ? const Color(0xFFFFC107)
+                              : Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: isCurrent
+                          ? const Color(0xFF4CAF50).withValues(alpha: 0.2)
+                          : Colors.white.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: isCurrent
+                            ? const Color(0xFF4CAF50).withValues(alpha: 0.6)
+                            : Colors.white24,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          isCurrent
+                              ? Icons.radio_button_checked
+                              : Icons.check_circle_outline,
+                          size: 13,
+                          color: isCurrent
+                              ? const Color(0xFF4CAF50)
+                              : Colors.white70,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          exp['status'] as String,
+                          style: TextStyle(
+                            color: isCurrent
+                                ? const Color(0xFF4CAF50)
+                                : Colors.white70,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    exp['duration'] as String,
+                    style: const TextStyle(
+                      color: Colors.white60,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            exp['type'] as String,
+            style: const TextStyle(
+              color: Colors.white54,
+              fontSize: 13,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...bullets.map(
+            (b) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 5, right: 10),
+                    child: Icon(
+                      Icons.arrow_right_rounded,
+                      size: 20,
+                      color: Color(0xFFDA8B26),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      b,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.88),
+                        fontSize: 14.5,
+                        height: 1.55,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 18),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.spaceBetween,
+            children: [
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: tech.map((t) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.15),
+                      ),
+                    ),
+                    child: Text(
+                      t,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              if (website != null)
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () => _launch(website),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFDA8B26), Color(0xFFFFC107)],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFDA8B26)
+                                .withValues(alpha: 0.35),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.language, size: 15, color: Colors.white),
+                          SizedBox(width: 6),
+                          Text(
+                            'visionoptocare.com',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(width: 6),
+                          Icon(Icons.open_in_new,
+                              size: 13, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _skills(bool desk, bool mob) {
     final mainSkills = [
       {
@@ -1194,30 +1583,50 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       },
     ];
     final otherSkills = [
-      {'name': 'HTML', 'icon': Icons.html, 'color': const Color(0xFFE44D26)},
-      {'name': 'CSS', 'icon': Icons.css, 'color': const Color(0xFF264DE4)},
-      {'name': 'Python', 'icon': Icons.code, 'color': const Color(0xFF3776AB)},
       {
-        'name': 'C',
-        'icon': Icons.code_rounded,
-        'color': const Color(0xFFA8B9CC)
+        'name': 'Firebase',
+        'icon': Icons.local_fire_department,
+        'color': const Color(0xFFFFCA28)
       },
-      {'name': 'C++', 'icon': Icons.code_off, 'color': const Color(0xFF00599C)},
       {
-        'name': 'MySQL',
-        'icon': Icons.table_chart,
-        'color': const Color(0xFF4479A1)
+        'name': 'Antigravity / AI',
+        'icon': Icons.auto_awesome,
+        'color': const Color(0xFF9C27B0)
       },
-      {'name': 'Hive', 'icon': Icons.widgets, 'color': const Color(0xFFFFCA28)},
       {
-        'name': 'Sqflite',
+        'name': 'Video SDKs',
+        'icon': Icons.videocam,
+        'color': const Color(0xFFE91E63)
+      },
+      {
+        'name': 'AWS',
+        'icon': Icons.cloud,
+        'color': const Color(0xFFFF9900)
+      },
+      {
+        'name': 'Git & GitHub',
+        'icon': Icons.merge_type,
+        'color': const Color(0xFFF05032)
+      },
+      {
+        'name': 'SQLite',
         'icon': Icons.data_object,
         'color': const Color(0xFF2196F3)
+      },
+      {
+        'name': 'C / C++',
+        'icon': Icons.code_rounded,
+        'color': const Color(0xFF00599C)
+      },
+      {
+        'name': 'SQL',
+        'icon': Icons.table_chart,
+        'color': const Color(0xFF4479A1)
       },
     ];
 
     return Container(
-      key: _sectionKeys[1],
+      key: _sectionKeys[2],
       padding: EdgeInsets.symmetric(
           horizontal: desk ? 120 : (mob ? 18 : 40), vertical: 100),
       child: AnimatedOpacity(
@@ -1393,14 +1802,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _projects(bool desk, bool mob) => ProjectsSection(
-        githubUsername: 'FaysArukattil',
-        githubToken: FirebaseTokenService.githubToken,
-        geminiApiKey: FirebaseTokenService.geminiApiKey,
-        eagerLoad: true,
-        onProjectsRefreshed: (projects) {
-          setState(() => _githubProjects = projects);
-        },
+  Widget _projects(bool desk, bool mob) => Container(
+        key: _sectionKeys[3],
+        child: ProjectsSection(
+          githubUsername: 'FaysArukattil',
+          githubToken: FirebaseTokenService.githubToken,
+          geminiApiKey: FirebaseTokenService.geminiApiKey,
+          eagerLoad: true,
+          onProjectsRefreshed: _onProjectsRefreshed,
+        ),
       );
 
   Widget _contact(bool desk, bool mob) {
@@ -1444,7 +1854,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ];
 
     return Container(
-      key: _sectionKeys[3],
+      key: _sectionKeys[4],
       padding: EdgeInsets.symmetric(
           horizontal: desk ? 120 : (mob ? 20 : 40), vertical: 100),
       child: AnimatedOpacity(

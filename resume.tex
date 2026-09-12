@@ -1,0 +1,215 @@
+%-------------------------
+% Resume in LaTeX
+% Author : Fays Arukattil
+% License : MIT
+% ATS-Friendly Format
+%-------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyhead[R]{\textit{\footnotesize\color{gray}Last updated in September 2026}}
+\fancyfoot[C]{\footnotesize\color{gray}Fays Arukattil -- Page \thepage\ of 2}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.0in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Primary Brand Colors matching portfolio/resume
+\definecolor{primary}{RGB}{0, 79, 144}
+\definecolor{linkblue}{RGB}{0, 79, 144}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-3pt}\scshape\raggedright\large\color{primary}\textbf
+}{}{0em}{}[\color{primary}\titlerule \vspace{-4pt}]
+
+% Ensure PDF is machine readable / ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{-1pt}\item
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.18in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \textbf{\color{primary}FAYS ARUKATTIL}} \\ \vspace{4pt}
+    \small 
+    Mumbai, Maharashtra \ $|$ \ 
+    \href{mailto:faysarukattil@gmail.com}{\color{linkblue}faysarukattil@gmail.com} \ $|$ \ 
+    \href{tel:+919605174832}{\color{linkblue}+91-9605174832} \ $|$ \ 
+    \href{https://faysarukattil.github.io/FaysArukattil_Portfolio/}{\color{linkblue}faysarukattil.github.io} \\ \vspace{2pt}
+    \href{https://linkedin.com/in/faysarukattil}{\color{linkblue}linkedin.com/in/faysarukattil} \ $|$ \ 
+    \href{https://github.com/FaysArukattil}{\color{linkblue}github.com/FaysArukattil}
+\end{center}
+
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+\small{
+Flutter Developer with hands-on experience building a full healthtech product end-to-end. As Founding Engineer at VisionOptoCare, I own the entire Flutter codebase (web, iOS, Android) for a platform that digitizes eye testing via smartphone for clinics and everyday users, currently in clinical trials ahead of launch, aiming to turn a slow, equipment-heavy process into something fast and accessible. I'm driven by real-world problems: I built an automated expense tracker after getting frustrated with manual entry, and a self-updating portfolio because I didn't want to maintain one by hand. I use AI-assisted tools like Antigravity and Cursor to move faster without cutting corners on code quality. Looking to join a product-focused team where I can keep solving practical problems and grow under experienced senior Flutter developers.
+}
+
+
+%-----------SKILLS-----------
+\section{Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Programming Languages}{: Dart, C, C++, SQL} \\ \vspace{1pt}
+     \textbf{Libraries and Frameworks}{: Flutter, REST APIs, HTTP, Dio, Provider, SQLite, SharedPreferences, Video SDKs} \\ \vspace{1pt}
+     \textbf{Cloud \& Backend}{: Firebase, Amazon Web Services (AWS), Firestore, Cloud Storage} \\ \vspace{1pt}
+     \textbf{Dev Tools}{: Antigravity, Cursor, AI-Assisted Development, Git, VS Code, Android Studio, Swagger, Android SDK} \\ \vspace{1pt}
+     \textbf{Domain}{: Health Tech, Full-Stack Product Development, R\&D, Healthcare Data Compliance} \\ \vspace{1pt}
+     \textbf{Soft Skills}{: Leadership, Problem Solving, Team Collaboration, Communication, Quick Learning, Teaching} \\ \vspace{1pt}
+     \textbf{Languages}{: English (Fluent), Malayalam (Native), Hindi (Conversational), Tamil (Conversational)}
+    }}
+\end{itemize}
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {VisionOptoCare}{Mumbai, Maharashtra (On-site)}
+      {Flutter Developer -- Founding Engineer}{December 2025 -- Present}
+      \resumeItemListStart
+        \resumeItem{Sole developer building the complete Flutter product (web, iOS, Android, desktop from a single codebase) to digitize eye testing using a smartphone, designed for both clinics and individual users; currently pre-launch and undergoing clinical trials}
+        \resumeItem{Own the full development lifecycle end-to-end: research, prototyping, implementation, and testing, with no other engineers on the team}
+        \resumeItem{Built automated diagnostic and report-generation systems that process clinical test data into structured, shareable reports}
+        \resumeItem{Designed and integrated APIs for video-based remote eye consultations, built to extend access to underserved users once launched}
+        \resumeItem{Implemented healthcare data security practices in line with compliance requirements}
+        \resumeItem{Translated clinical and medical requirements from doctors into working technical features}
+        \resumeItem{Built and maintain the company website (\href{https://visionoptocare.com/}{\color{linkblue}visionoptocare.com}) introducing the product and company}
+        \resumeItem{\textbf{Tech stack:} Flutter, Dart, REST APIs, Video SDKs, Firebase, AWS, Git}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Luminar Technolab}{Kochi, Kerala}
+      {Flutter Developer Trainee}{June 2025 -- December 2025}
+      \resumeItemListStart
+        \resumeItem{Built Flutter mobile apps with a focus on clean UI design and smooth performance}
+        \resumeItem{Wrote maintainable code following best practices while collaborating with a team}
+        \resumeItem{Gained experience with state management patterns like Provider and REST API integration using Http and Dio}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{Buddy -- Auto Expense Tracker with Notification Reading} $|$ \emph{Flutter, Dart, SQLite, FL Chart}}{\href{https://github.com/FaysArukattil/buddy}{\color{linkblue}github.com/FaysArukattil/buddy}}
+          \resumeItemListStart
+            \resumeItem{Built an expense tracker that automatically reads transaction SMS and UPI notifications to add expenses without manual entry}
+            \resumeItem{Runs a background listener service with regex-based parsing to extract amount, sender, UPI ID and timestamp}
+            \resumeItem{Implemented duplicate prevention using notification hashing and time-window checks}
+            \resumeItem{Added analytics with daily, weekly, monthly charts using FL Chart}
+            \resumeItem{Used SQLite for offline storage and added PDF export for summaries}
+            \resumeItem{\textbf{Tech stack:} Flutter, Dart, SQLite, Background Services, FL Chart}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{AI-Powered Self-Updating Portfolio} $|$ \emph{Flutter Web, Firebase, GitHub API, Gemini}}{\href{https://faysarukattil.github.io/FaysArukattil_Portfolio/}{\color{linkblue}faysarukattil.github.io}}
+          \resumeItemListStart
+            \resumeItem{Automatically fetches repositories using GitHub API and generates summaries via Google Gemini}
+            \resumeItem{Firestore-based secure token storage ensures no API keys ever appear in code}
+            \resumeItem{Intelligent scoring filters hide practice repos and highlight high-quality ones}
+            \resumeItem{Dynamic project cards update instantly when new repos are pushed to GitHub}
+            \resumeItem{Clean, responsive UI with smooth animations and organized sections}
+            \resumeItem{\textbf{Tech stack:} Flutter Web, Firebase, GitHub API, Google Generative AI}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Instagram Clone} $|$ \emph{Flutter, Dart, Video Player, Camera, SharedPreferences}}{\href{https://github.com/FaysArukattil/instagram}{\color{linkblue}github.com/FaysArukattil/instagram}}
+          \resumeItemListStart
+            \resumeItem{Replicated core features: Feed, Reels, Search, Chat, Stories and Profile}
+            \resumeItem{Added auto-play reels, pinch-to-zoom images, and smooth video interactions}
+            \resumeItem{Camera + gallery support for creating and sharing posts, reels, and stories}
+            \resumeItem{Local persistence using SharedPreferences for likes, posts, comments, and user data}
+            \resumeItem{Real-time chat UI with message status and explore page with staggered grid}
+            \resumeItem{\textbf{Tech stack:} Flutter, Dart, Video Player, Camera, SharedPreferences}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {MES College of Engineering, Kuttippuram}{Kuttippuram, Kerala}
+      {B.Tech in Computer Science and Engineering}{June 2021 -- April 2025}
+      \resumeItemListStart
+        \resumeItem{Studied core CS subjects like Data Structures, Algorithms, OOPS, DBMS, and Software Engineering}
+        \resumeItem{Served as Class Representative for four consecutive years throughout college}
+        \resumeItem{Participated in technical workshops and coding competitions throughout college}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications}
+  \resumeSubHeadingListStart
+    \resumeItem{\textbf{Flutter Development Training} -- Luminar Technolab, Kochi (Completed, December 2025)}
+    \resumeItem{\textbf{B.Tech in Computer Science and Engineering} -- MES College of Engineering, Kuttippuram (2025)}
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}

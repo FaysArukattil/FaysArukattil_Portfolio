@@ -621,13 +621,19 @@ class _ProjectsSectionState extends State<ProjectsSection> {
 
     final name = project['name'] as String;
     final displayTitle = project['display_title'] as String? ?? name;
+    final isLocked = project['is_locked'] == true ||
+        project['is_locked'] == 'true' ||
+        name.toLowerCase().contains('visiaxx') ||
+        displayTitle.toLowerCase().contains('visiaxx');
+    final companyUrl =
+        project['company_url'] as String? ?? 'https://visionoptocare.com/';
     final shortSummary =
         project['short_summary'] as String? ?? 'A Flutter mobile application';
     final detailedSummary =
         project['detailed_summary'] as String? ?? shortSummary;
     final language = project['language'] as String?;
-    final url = project['html_url'] as String;
-    final projectColor = _getProjectColor(index);
+    final targetUrl = isLocked ? companyUrl : (project['html_url'] as String);
+    final projectColor = isLocked ? const Color(0xFFDA8B26) : _getProjectColor(index);
 
     final currentSummary = shouldExpand ? detailedSummary : shortSummary;
 
@@ -660,7 +666,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             : null,
         cursor: _isDesktop ? SystemMouseCursors.click : MouseCursor.defer,
         child: GestureDetector(
-          onTap: () => _launchUrl(url),
+          onTap: () => _launchUrl(targetUrl),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
@@ -694,6 +700,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
@@ -716,8 +723,8 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                               ]
                             : [],
                       ),
-                      child: const Icon(
-                        Icons.phone_android,
+                      child: Icon(
+                        isLocked ? Icons.visibility_rounded : Icons.phone_android,
                         color: Colors.white,
                         size: 32,
                       ),
@@ -737,6 +744,43 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    if (isLocked) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFDA8B26), Color(0xFFFFC107)],
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFDA8B26)
+                                  .withValues(alpha: 0.4),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.lock_rounded,
+                                size: 12, color: Colors.white),
+                            SizedBox(width: 4),
+                            Text(
+                              'Company Repo',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.4,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -766,32 +810,79 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                if (language != null)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: projectColor.withValues(alpha: 0.25),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: projectColor.withValues(alpha: 0.6),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.code, size: 16, color: projectColor),
-                        const SizedBox(width: 6),
-                        Text(
-                          language,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    if (language != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: projectColor.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: projectColor.withValues(alpha: 0.6),
+                            width: 1.5,
                           ),
                         ),
-                      ],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.code, size: 16, color: projectColor),
+                            const SizedBox(width: 6),
+                            Text(
+                              language,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (isLocked)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.amber.withValues(alpha: 0.5),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.security, size: 14, color: Color(0xFFFFC107)),
+                            SizedBox(width: 6),
+                            Text(
+                              'Private Enterprise Codebase',
+                              style: TextStyle(
+                                color: Color(0xFFFFC107),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+                if (isLocked)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      '🔒 Proprietary startup codebase hosted on company GitHub. Platform introduction available at visionoptocare.com',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.65),
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
                 const SizedBox(height: 24),
@@ -800,10 +891,15 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        projectColor,
-                        projectColor.withValues(alpha: 0.8)
-                      ],
+                      colors: isLocked
+                          ? [
+                              const Color(0xFFDA8B26),
+                              const Color(0xFFFFC107),
+                            ]
+                          : [
+                              projectColor,
+                              projectColor.withValues(alpha: 0.8),
+                            ],
                     ),
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
@@ -814,22 +910,30 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                       ),
                     ],
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.code, color: Colors.white, size: 20),
-                      SizedBox(width: 10),
+                      Icon(
+                        isLocked ? Icons.lock_outline_rounded : Icons.code,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 10),
                       Text(
-                        'View on GitHub',
-                        style: TextStyle(
+                        isLocked ? 'Visit Company Website' : 'View on GitHub',
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.5,
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                      const SizedBox(width: 8),
+                      Icon(
+                        isLocked ? Icons.open_in_new : Icons.arrow_forward,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ],
                   ),
                 ),
