@@ -14,7 +14,7 @@ class ResumeGeneratorService {
 
   // Base CV content matching your verified PDF resume
   static const String _professionalSummary =
-      '''Flutter Developer with hands-on experience building a full healthtech product end-to-end. As Founding Engineer at VisionOptoCare, I own the entire Flutter codebase (web, iOS, Android) for a platform that digitizes eye testing via smartphone for clinics and everyday users, currently in clinical trials ahead of launch, aiming to turn a slow, equipment-heavy process into something fast and accessible. I'm driven by real-world problems: I built an automated expense tracker after getting frustrated with manual entry, and a self-updating portfolio because I didn't want to maintain one by hand. I use AI-assisted tools like Antigravity and Cursor to move faster without cutting corners on code quality. Looking to join a product-focused team where I can keep solving practical problems and grow under experienced senior Flutter developers.''';
+      '''Flutter Developer with hands-on experience building a full healthtech product end-to-end. As Founding Engineer at VisionOptoCare, I own the entire Flutter codebase (web, iOS, Android) for a platform that digitizes eye testing via smartphone for clinics and everyday users, currently in clinical trials ahead of launch, aiming to turn a slow, equipment-heavy process into something fast and accessible. I'm driven by real-world problems: I built an automated expense tracker after getting frustrated with manual entry, and a self-updating portfolio because I didn't want to maintain one by hand. I use AI-assisted tools like Antigravity and Cursor to move faster without cutting corners on code quality. Looking to join a product-focused team where I can keep solving practical problems.''';
 
   static const Map<String, List<String>> _skills = {
     'Programming Languages': ['Dart', 'C', 'C++', 'SQL'],
@@ -70,7 +70,7 @@ class ResumeGeneratorService {
     {
       'company': 'VisionOptoCare',
       'title': 'Flutter Developer – Founding Engineer',
-      'location': 'Mumbai, Maharashtra\n(On-site)',
+      'location': 'Mumbai, Maharashtra (On-site)',
       'duration': 'December 2025 – Present',
       'highlights': [
         'Sole developer building the complete Flutter product (web, iOS, Android, desktop from a single codebase) to digitize eye testing using a smartphone, designed for both clinics and individual users; currently pre-launch and undergoing clinical trials',
@@ -178,10 +178,10 @@ class ResumeGeneratorService {
         .replaceAll(RegExp(r'[\u{2B00}-\u{2BFF}]', unicode: true), '')
         .replaceAll('–', '-')
         .replaceAll('—', '-')
-        .replaceAll(''', "'")
-        .replaceAll(''', "'")
-        .replaceAll('"', '"')
-        .replaceAll('"', '"')
+        .replaceAll('’', "'")
+        .replaceAll('‘', "'")
+        .replaceAll('“', '"')
+        .replaceAll('”', '"')
         .replaceAll('…', '...')
         .trim();
 
@@ -195,13 +195,15 @@ class ResumeGeneratorService {
 
     final pdf = pw.Document();
 
-    // FIXED: Combine base projects with dynamic projects
     final allProjects = _buildProjectsList(githubProjects);
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.letter,
-        margin: const pw.EdgeInsets.all(2 * PdfPageFormat.cm),
+        margin: const pw.EdgeInsets.symmetric(
+          horizontal: 1.27 * PdfPageFormat.cm,
+          vertical: 1.1 * PdfPageFormat.cm,
+        ),
         theme: pw.ThemeData.withFont(
           base: _cachedRegularFont,
           bold: _cachedBoldFont,
@@ -209,17 +211,17 @@ class ResumeGeneratorService {
         ),
         build: (context) => [
           _buildHeader(),
-          pw.SizedBox(height: 12),
+          pw.SizedBox(height: 7),
           _buildSection('Professional Summary', _buildSummary()),
-          pw.SizedBox(height: 12),
+          pw.SizedBox(height: 7),
           _buildSection('Skills', _buildSkills()),
-          pw.SizedBox(height: 12),
+          pw.SizedBox(height: 7),
           _buildSection('Experience', _buildExperience()),
-          pw.SizedBox(height: 12),
+          pw.NewPage(),
           _buildSection('Projects', _buildProjects(allProjects)),
-          pw.SizedBox(height: 12),
+          pw.SizedBox(height: 7),
           _buildSection('Education', _buildEducation()),
-          pw.SizedBox(height: 12),
+          pw.SizedBox(height: 7),
           _buildSection('Certifications', _buildCertifications()),
         ],
         footer: (context) => _buildFooter(context),
@@ -301,23 +303,24 @@ class ResumeGeneratorService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Container(
+          width: double.infinity,
           decoration: const pw.BoxDecoration(
             border: pw.Border(
               bottom: pw.BorderSide(color: primaryColor, width: 0.8),
             ),
           ),
-          padding: const pw.EdgeInsets.only(bottom: 2),
+          padding: const pw.EdgeInsets.only(bottom: 1.5),
           child: pw.Text(
             title,
             style: pw.TextStyle(
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: pw.FontWeight.bold,
               color: primaryColor,
               font: _cachedBoldFont,
             ),
           ),
         ),
-        pw.SizedBox(height: 6),
+        pw.SizedBox(height: 3),
         content,
       ],
     );
@@ -327,8 +330,8 @@ class ResumeGeneratorService {
     return pw.Text(
       _cleanText(_professionalSummary),
       style: pw.TextStyle(
-        fontSize: 10,
-        lineSpacing: 1.4,
+        fontSize: 9.5,
+        lineSpacing: 1.15,
         font: _cachedRegularFont,
       ),
       textAlign: pw.TextAlign.justify,
@@ -340,16 +343,16 @@ class ResumeGeneratorService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: _skills.entries.map((entry) {
         return pw.Padding(
-          padding: const pw.EdgeInsets.only(bottom: 4),
+          padding: const pw.EdgeInsets.only(bottom: 2),
           child: pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.SizedBox(
-                width: 180,
+                width: 155,
                 child: pw.Text(
                   '${entry.key}:',
                   style: pw.TextStyle(
-                    fontSize: 10,
+                    fontSize: 9.5,
                     fontWeight: pw.FontWeight.bold,
                     font: _cachedBoldFont,
                   ),
@@ -359,7 +362,7 @@ class ResumeGeneratorService {
                 child: pw.Text(
                   entry.value.join(', '),
                   style: pw.TextStyle(
-                    fontSize: 10,
+                    fontSize: 9.5,
                     font: _cachedRegularFont,
                   ),
                 ),
@@ -380,51 +383,54 @@ class ResumeGeneratorService {
 
         return pw.Padding(
           padding: pw.EdgeInsets.only(
-            bottom: index < _experiences.length - 1 ? 8 : 0,
+            bottom: index < _experiences.length - 1 ? 4 : 0,
           ),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Expanded(
-                    child: pw.RichText(
-                      text: pw.TextSpan(
-                        children: [
-                          pw.TextSpan(
-                            text: '${exp['company']}, ',
-                            style: pw.TextStyle(
-                              fontSize: 10.5,
-                              fontWeight: pw.FontWeight.bold,
-                              font: _cachedBoldFont,
-                            ),
-                          ),
-                          pw.TextSpan(
-                            text: exp['title'] as String,
-                            style: pw.TextStyle(
-                              fontSize: 10,
-                              fontStyle: pw.FontStyle.italic,
-                              font: _cachedItalicFont,
-                            ),
-                          ),
-                        ],
-                      ),
+                  pw.Text(
+                    exp['company'] as String,
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold,
+                      font: _cachedBoldFont,
                     ),
                   ),
-                  pw.SizedBox(width: 10),
                   pw.Text(
-                    '${exp['location']}\n${exp['duration']}',
+                    exp['location'] as String,
                     style: pw.TextStyle(
                       fontSize: 8.5,
                       font: _cachedRegularFont,
                     ),
-                    textAlign: pw.TextAlign.right,
                   ),
                 ],
               ),
-              pw.SizedBox(height: 3),
+              pw.SizedBox(height: 1),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text(
+                    exp['title'] as String,
+                    style: pw.TextStyle(
+                      fontSize: 9,
+                      fontStyle: pw.FontStyle.italic,
+                      font: _cachedItalicFont,
+                    ),
+                  ),
+                  pw.Text(
+                    exp['duration'] as String,
+                    style: pw.TextStyle(
+                      fontSize: 8.5,
+                      fontStyle: pw.FontStyle.italic,
+                      font: _cachedItalicFont,
+                    ),
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 1.5),
               ...(exp['highlights'] as List<String>)
                   .map((h) => _buildBulletPoint(_cleanText(h))),
             ],
@@ -443,47 +449,42 @@ class ResumeGeneratorService {
 
         return pw.Padding(
           padding: pw.EdgeInsets.only(
-            bottom: index < projects.length - 1 ? 8 : 0,
+            bottom: index < projects.length - 1 ? 4 : 0,
           ),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Expanded(
-                    flex: 3,
                     child: pw.Text(
                       _cleanText(project['title'] as String),
                       style: pw.TextStyle(
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: pw.FontWeight.bold,
                         font: _cachedBoldFont,
                       ),
                     ),
                   ),
-                  pw.SizedBox(width: 10),
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.UrlLink(
-                      destination: (project['url'] as String).startsWith('http')
-                          ? project['url'] as String
-                          : 'https://${project['url']}',
-                      child: pw.Text(
-                        project['url'] as String,
-                        style: pw.TextStyle(
-                          fontSize: 9,
-                          color: primaryColor,
-                          font: _cachedRegularFont,
-                        ),
-                        textAlign: pw.TextAlign.right,
+                  pw.SizedBox(width: 8),
+                  pw.UrlLink(
+                    destination: (project['url'] as String).startsWith('http')
+                        ? project['url'] as String
+                        : 'https://${project['url']}',
+                    child: pw.Text(
+                      project['url'] as String,
+                      style: pw.TextStyle(
+                        fontSize: 8.5,
+                        color: primaryColor,
+                        font: _cachedRegularFont,
                       ),
+                      textAlign: pw.TextAlign.right,
                     ),
                   ),
                 ],
               ),
-              pw.SizedBox(height: 4),
+              pw.SizedBox(height: 1.5),
               ...(project['highlights'] as List<String>)
                   .map((h) => _buildBulletPoint(_cleanText(h))),
             ],
@@ -499,30 +500,25 @@ class ResumeGeneratorService {
       children: [
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
-            pw.Expanded(
-              child: pw.Text(
-                '${_education['institution']}, ${_education['degree']}',
-                style: pw.TextStyle(
-                  fontSize: 11,
-                  fontWeight: pw.FontWeight.bold,
-                  font: _cachedBoldFont,
-                ),
+            pw.Text(
+              '${_education['institution']}, ${_education['degree']}',
+              style: pw.TextStyle(
+                fontSize: 10,
+                fontWeight: pw.FontWeight.bold,
+                font: _cachedBoldFont,
               ),
             ),
-            pw.SizedBox(width: 10),
             pw.Text(
               _education['duration'] as String,
               style: pw.TextStyle(
-                fontSize: 9,
+                fontSize: 8.5,
                 font: _cachedRegularFont,
               ),
-              textAlign: pw.TextAlign.right,
             ),
           ],
         ),
-        pw.SizedBox(height: 4),
+        pw.SizedBox(height: 1.5),
         ...(_education['highlights'] as List<String>)
             .map((h) => _buildBulletPoint(_cleanText(h))),
       ],
@@ -534,14 +530,31 @@ class ResumeGeneratorService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: _certifications.map((cert) {
         return pw.Padding(
-          padding: const pw.EdgeInsets.only(bottom: 4),
-          child: pw.Text(
-            _cleanText(cert),
-            style: pw.TextStyle(
-              fontSize: 10,
-              fontWeight: pw.FontWeight.bold,
-              font: _cachedBoldFont,
-            ),
+          padding: const pw.EdgeInsets.only(bottom: 2),
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Container(
+                width: 7,
+                child: pw.Text(
+                  '•',
+                  style: pw.TextStyle(
+                    fontSize: 9.2,
+                    font: _cachedRegularFont,
+                  ),
+                ),
+              ),
+              pw.Expanded(
+                child: pw.Text(
+                  _cleanText(cert),
+                  style: pw.TextStyle(
+                    fontSize: 9.2,
+                    fontWeight: pw.FontWeight.bold,
+                    font: _cachedBoldFont,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       }).toList(),
@@ -550,16 +563,16 @@ class ResumeGeneratorService {
 
   pw.Widget _buildBulletPoint(String text) {
     return pw.Padding(
-      padding: const pw.EdgeInsets.only(left: 12, bottom: 2),
+      padding: const pw.EdgeInsets.only(left: 8, bottom: 1.2),
       child: pw.Row(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Container(
-            width: 8,
+            width: 7,
             child: pw.Text(
               '•',
               style: pw.TextStyle(
-                fontSize: 10,
+                fontSize: 9.2,
                 font: _cachedRegularFont,
               ),
             ),
@@ -568,8 +581,8 @@ class ResumeGeneratorService {
             child: pw.Text(
               text,
               style: pw.TextStyle(
-                fontSize: 10,
-                lineSpacing: 1.3,
+                fontSize: 9.2,
+                lineSpacing: 1.1,
                 font: _cachedRegularFont,
               ),
             ),

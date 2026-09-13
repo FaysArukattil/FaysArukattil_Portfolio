@@ -41,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   bool _isDesktop = false;
   bool _isDownloading = false;
 
-  // Cache for PDF bytes and projects (v3 with verified resume updates)
+  // Cache for PDF bytes and projects (v4 with 2-page compact layout)
   Uint8List? _cachedPdfBytes;
   List<Map<String, dynamic>>? _cachedProjects;
-  static const String _pdfCacheKey = 'cached_resume_pdf_v3';
-  static const String _projectsCacheKey = 'cached_resume_projects_v3';
+  static const String _pdfCacheKey = 'cached_resume_pdf_v4';
+  static const String _projectsCacheKey = 'cached_resume_projects_v4';
 
   @override
   @override
@@ -1013,7 +1013,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               constraints:
                   BoxConstraints(maxWidth: desk ? 580 : double.infinity),
               child: Text(
-                  "Founding engineer at VisionOptoCare building an end-to-end digital eye testing platform (web, iOS, Android). Experienced in owning full product lifecycles, automated diagnostic reports, video consultation SDKs, and rapid AI-assisted development (Antigravity & Cursor). Seeking to solve practical real-world problems and grow under senior engineers in a product team.",
+                  "Founding engineer at VisionOptoCare building an end-to-end digital eye testing platform (web, iOS, Android). Experienced in owning full product lifecycles, automated diagnostic reports, video consultation SDKs, and rapid AI-assisted development (Antigravity & Cursor). Seeking to solve practical real-world problems in a high-impact product team.",
                   textAlign: desk ? TextAlign.left : TextAlign.center,
                   style: TextStyle(
                       fontSize: mob ? 15 : 17,
